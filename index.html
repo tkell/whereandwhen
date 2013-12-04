@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0; padding: 0 ; font-family:"Tahoma", Geneva, sans-serif;}
+  map_canvas { height: 100% ; width: 100%}
+</style>
+<link href="skin/jplayer.blue.monday.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
+<script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false">
+</script>
+
+<!- BEGIN MASSIVE JPLAYER SCRIPT -->
+<script type="text/javascript">
+
+//<![CDATA[
+$(document).ready(function(){
+});
+//]]>
+</script>
+<!-- END MASSIVE JPLAYER SCRIPT -->
+
+<script type="text/javascript">
+function initialize() {
+    var latlng = new google.maps.LatLng(40.715,-74.00);
+    var myOptions = {
+      zoom: 14, // good NYC zoom was 14.  
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.HYBRID
+    };
+
+	map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  
+  	google.maps.event.addListener(map, 'click', function(event) {
+    	loadLatLon(event.latLng);});
+}
+
+// Click for magic
+function loadLatLon(location) {
+	
+	// maybe I need to refresh the pl here
+	
+	 // Need to check the year, 
+    var theYear = document.yearForm.year.value
+    theYear = theYear * 1;
+    if (isNaN(theYear)) {theYear = 2011;}
+    if (theYear == 0) {theYear = 2011;}
+    var startYear = theYear - 2; var endYear = theYear + 1;
+    
+    // Cut the lat / lon to 3 places:  74.00
+    var squareSize = 4.0;
+    var theLat = location.lat().toFixed(2); var minLat = theLat - squareSize;  var maxLat = theLat + (squareSize * 1.0); // convert to numbers, man
+    var theLng = location.lng().toFixed(2); var minLng = theLng - squareSize;  var maxLng = theLng + (squareSize * 1.0);
+    var latStr = ''; var lngStr ='';
+    if (theLat < 0) {latStr = 'S'};
+    if (theLat >= 0) {latStr = 'N'}; 
+    if (theLng < 0) {lngStr = 'W'};
+    if (theLng >= 0) {lngStr = 'E'}; 
+
+    
+	/// Don't forget to switch call strings!
+	// artist start year moved to betwee date - 2 and date + 1
+	// random number to pick one of 8 calls, man:  sort-asc
+	
+	var pickMe = Math.floor(Math.random()*9);
+	var realCallUrl = '';
+	
+	var call1 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.8&sort=artist_hotttnesss-asc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	var call2 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.8&sort=artist_hotttnesss-desc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	var call3 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.6&sort=artist_hotttnesss-asc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	var call4 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.6&sort=artist_hotttnesss-desc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	var call5 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.45&sort=artist_hotttnesss-asc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	var call6 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.45&sort=artist_hotttnesss-desc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	var call7 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.3&sort=artist_hotttnesss-asc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	var call8 = 'http://developer.echonest.com/api/v4/song/search?api_key=WOUHTN44BMS5SMPF2&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.3&sort=artist_hotttnesss-desc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+
+	switch(pickMe) {
+	case 1:
+	  realCallUrl = call1;
+	  break;
+	case 2:
+	  realCallUrl = call2;
+	  break;
+	case 3:
+	  realCallUrl = call3;
+	  break;
+	case 4:
+	  realCallUrl = call4;
+	  break;  
+	case 5:
+	  realCallUrl = call5;
+	  break;
+	case 6:
+	  realCallUrl = call6;
+	  break;
+	case 7:
+	  realCallUrl = call7;
+	  break;
+	case 8:
+	  realCallUrl = call8;
+	  break;  	  
+	default:
+	  realCallUrl = call1;
+	}
+	
+	//var realCallUrl = 'http://developer.echonest.com/api/v4/song/search?api_key=N6E4NIOVYMTHNDM8J&format=json&results=100&bucket=id:7digital-US&bucket=tracks&song_min_hotttnesss=0.6&sort=artist_hotttnesss-asc&artist_start_year_before=' + endYear + '&artist_start_year_after=' + startYear + '&min_latitude=' + minLat + '&max_latitude=' + maxLat + '&min_longitude=' + minLng + '&max_longitude=' + maxLng;
+	//var tempCallUrl = 'http://developer.echonest.com/api/v4/playlist/static?api_key=N6E4NIOVYMTHNDM8J&artist=Burial&format=json&results=5&type=artist-radio&bucket=id:7digital-US&bucket=tracks';
+	
+	// Deal with display stuff.
+	displayString = "LOADING ------>>>  " + theYear + "/" + theLat + latStr + "/" + theLng + lngStr;
+    document.getElementById("splashText").innerHTML = displayString;	
+
+    // magic XMLHttp stuff
+    var xmlHttp = null;
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", realCallUrl, false );
+    xmlHttp.send( null );
+    
+    // document.all.splashText.innerHTML = xmlHttp.responseText; // debugz
+    
+    var playlistJSON = JSON.parse(xmlHttp.responseText);
+    
+    function randomSort(a,b) {
+    	return( parseInt( Math.random()*10 ) %2 );
+	}
+    
+    // for song in songs, if tracks and preview url, append preview url to playlist
+    end = playlistJSON.response.songs.length;
+    var newTracks = new Array();
+	for (i = 0; i < end; i++)
+	{
+		if (playlistJSON.response.songs[i].tracks != undefined)
+		{
+            if (playlistJSON.response.songs[i].tracks.length == 0) {
+                continue;
+            }
+			var miniDict = new Array();
+			miniDict["name"] = playlistJSON.response.songs[i].artist_name + ' - ' + playlistJSON.response.songs[i].title;
+			miniDict["mp3"] = playlistJSON.response.songs[i].tracks[0].preview_url;
+            console.log(playlistJSON.response.songs[i].tracks[0].preview_url);
+			newTracks.push(miniDict);
+		}
+	}
+	
+	// Randomize the order of newTracks, then cut to 10
+	newTracks = newTracks.sort(randomSort);
+	var finalTracks = new Array();
+	
+	if (newTracks.length == 0)
+	{
+		displayString = "WHERE AND WHEN ------>>>  " + "NO SONGS FOUND";
+    	document.getElementById("splashText").innerHTML = displayString;	
+	
+	}
+
+	finalLength = 10;
+	if (newTracks.length < 10) {finalLength = newTracks.length}
+	for (i = 0; i < finalLength; i++)
+	{
+		if (newTracks[i] != undefined) {finalTracks.push(newTracks[i]);}
+		
+		// alert(finalTracks[i]["mp3"]); // debugz
+		// alert(finalTracks[i]["name"]); // debugz
+	}
+	
+	
+	// Keeping this around in case things break.
+	newTracksTest = [
+		{name:"1",mp3:"http://previews.7digital.com/clips/34/8984688.clip.mp3",},
+		{name:"2",mp3:"http://previews.7digital.com/clips/34/8596069.clip.mp3",},
+		]
+	
+	$("#jquery_jplayer_1").jPlayer( "destroy" ); // Kill the old player.  Haaaack
+		
+	// I need to call this fucking thing every click?  Merde.  Hack Hack Hack.
+	var Playlist = function(instance, playlist, options) {
+		var self = this;
+		this.instance = instance; // String: To associate specific HTML with this playlist
+		this.playlist = playlist; // Array of Objects: The playlist
+		this.options = options; // Object: The jPlayer constructor options for this playlist
+
+		this.current = 0;
+
+		this.cssId = {
+			jPlayer: "jquery_jplayer_",
+			interface: "jp_interface_",
+			playlist: "jp_playlist_"
+		};
+		this.cssSelector = {};
+
+		$.each(this.cssId, function(entity, id) {
+			self.cssSelector[entity] = "#" + id + self.instance;
+		});
+
+		if(!this.options.cssSelectorAncestor) {
+			this.options.cssSelectorAncestor = this.cssSelector.interface;
+		}
+
+		$(this.cssSelector.jPlayer).jPlayer(this.options);
+
+		$(this.cssSelector.interface + " .jp-previous").click(function() {
+			self.playlistPrev();
+			$(this).blur();
+			return false;
+		});
+
+		$(this.cssSelector.interface + " .jp-next").click(function() {
+			self.playlistNext();
+			$(this).blur();
+			return false;
+		});
+	};
+	Playlist.prototype = {
+		displayPlaylist: function() 
+		{
+			var self = this;
+			$(this.cssSelector.playlist + " ul").empty();
+			for (i=0; i < this.playlist.length; i++) 
+			{
+				var listItem = (i === this.playlist.length-1) ? "<li class='jp-playlist-last'>" : "<li>";
+				listItem += "<a href='#' id='" + this.cssId.playlist + this.instance + "_item_" + i +"' tabindex='1'>"+ this.playlist[i].name +"</a>";
+
+				listItem += "</li>";
+
+				// Associate playlist items with their media
+				$(this.cssSelector.playlist + " ul").append(listItem);
+				$(this.cssSelector.playlist + "_item_" + i).data("index", i).click(function() {
+					var index = $(this).data("index");
+					if(self.current !== index) {
+						self.playlistChange(index);
+					} else {
+						$(self.cssSelector.jPlayer).jPlayer("play");
+					}
+					$(this).blur();
+					return false;
+				});
+			}
+		},
+		playlistInit: function(autoplay) {
+			if(autoplay) {
+				this.playlistChange(this.current);
+			} else {
+				this.playlistConfig(this.current);
+			}
+		},
+		playlistConfig: function(index) {
+			$(this.cssSelector.playlist + "_item_" + this.current).removeClass("jp-playlist-current").parent().removeClass("jp-playlist-current");
+			$(this.cssSelector.playlist + "_item_" + index).addClass("jp-playlist-current").parent().addClass("jp-playlist-current");
+			this.current = index;
+			$(this.cssSelector.jPlayer).jPlayer("setMedia", this.playlist[this.current]);
+		},
+		playlistChange: function(index) {
+			this.playlistConfig(index);
+			$(this.cssSelector.jPlayer).jPlayer("play");
+		},
+		playlistNext: function() {
+			var index = (this.current + 1 < this.playlist.length) ? this.current + 1 : 0;
+			this.playlistChange(index);
+		},
+		playlistPrev: function() {
+			var index = (this.current - 1 >= 0) ? this.current - 1 : this.playlist.length - 1;
+			this.playlistChange(index);
+		}
+	};
+
+	var audioPlaylist = new Playlist("1", finalTracks, 
+		{
+		ready: function() {
+			audioPlaylist.displayPlaylist();
+			audioPlaylist.playlistInit(true); // Parameter is a boolean for autoplay.
+		},
+		ended: function() {
+			audioPlaylist.playlistNext();
+		},
+		play: function() {
+			$(this).jPlayer("pauseOthers");
+		},
+		swfPath: "js",
+		supplied: "mp3"
+	});    
+}
+</script>
+
+
+
+
+
+</head>
+<body onload="initialize()">
+  <div id="map_canvas" style="width:100%; height:75%"></div>
+  <br />
+  <div id="splashText" style="width:95%; height:50px; margin-left:10px; font-size:250%; font-weight:bold">WHERE AND WHEN ------>>></div>
+  <br />
+  <div id="yearInput" style="width:650px; height:50px; margin-left:10px; float:left">
+	  <form name="yearForm">
+	  <input type="text" name="year"><br/>
+	  ^^ Enter a year, then click on the map to hear music from that time & place.
+	  </form>
+  </div>  
+  <br />
+  <a href = 'http://the.echonest.com' target='_blank'><img src='EN_P_on_White_Horizontal.gif'></a>
+  <br />
+  
+  <div style="font-size: 75%;">(Hacked up by <a href='http://djfractal.net' target='_blank'>Thor Kell</a>, Summer 2011.  Love to the Echo Nest.)</div> 
+  <!-- BEGIN JPLAYER HTML -->
+    <div style="width:450px; height:200px; margin-left:10px; vertical-align:top; float:right">
+	<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+	<div class="jp-audio">
+		<div class="jp-type-playlist">
+			<div id="jp_interface_1" class="jp-interface">
+				<ul class="jp-controls">
+					<li><a href="#" class="jp-play" tabindex="1">play</a></li>
+					<li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
+					<li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
+					<li><a href="#" class="jp-mute" tabindex="1">mute</a></li>
+					<li><a href="#" class="jp-unmute" tabindex="1">unmute</a></li>
+					<li><a href="#" class="jp-previous" tabindex="1">previous</a></li>
+					<li><a href="#" class="jp-next" tabindex="1">next</a></li>
+				</ul>
+				<div class="jp-progress">
+					<div class="jp-seek-bar">
+						<div class="jp-play-bar"></div>
+					</div>
+				</div>
+				<div class="jp-volume-bar">
+					<div class="jp-volume-bar-value"></div>
+				</div>
+				<div class="jp-current-time"></div>
+				<div class="jp-duration"></div>
+			</div>
+			<div id="jp_playlist_1" class="jp-playlist">
+				<ul>
+					<!-- The method Playlist.displayPlaylist() uses this unordered list -->
+					<li></li>
+				</ul>
+			</div>
+		</div>
+	</div>  
+	
+	</div>
+  <!-- END JPLAYER HTML -->
+  
+  
+  
+</body>
+</html>
